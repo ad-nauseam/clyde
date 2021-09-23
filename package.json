@@ -1,0 +1,52 @@
+{
+	"name": "algo-chan",
+	"version": "0.1.0",
+	"description": "a collaborative Discord bot for the binarysus server",
+	"main": "./dist/index.js",
+	"scripts": {
+		"build": "rm -rf dist && npx tsc",
+		"lint:fix": "npx eslint src --fix",
+		"format": "npx prettier src -w",
+		"format:check": "npx prettier src -c",
+		"lint": "npx eslint src",
+		"start": "npx env-cmd node .",
+		"start:edit": "npx env-cmd node . --edit",
+		"start:type-change": "npx env-cmd node . --type-change",
+		"start:debug": "npx env-cmd node . --debug"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/binarysus/algo-chan.git"
+	},
+	"author": "itsUrcute",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/binarysus/algo-chan/issues"
+	},
+	"homepage": "https://github.com/binarysus/algo-chan#readme",
+	"imports": {
+		"#buttons/*": "./dist/buttons/*.js",
+		"#classes/*": "./dist/classes/*.js",
+		"#commands/*": "./dist/commands/*.js",
+		"#constants/*": "./dist/constants/*.js",
+		"#events/*": "./dist/events/*.js",
+		"#internals/*": "./dist/internals/*.js",
+		"#types/*": "./dist/types/*.js",
+		"#utils/*": "./dist/utils/*.js"
+	},
+	"dependencies": {
+		"chalk": "^4.1.2",
+		"discord.js": "^13.0.1",
+		"env-cmd": "^10.1.0"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^4.28.2",
+		"@typescript-eslint/parser": "^4.28.2",
+		"eslint": "^7.30.0",
+		"eslint-config-marine": "^9.0.6",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.0",
+		"prettier": "^2.3.2",
+		"typescript": "^4.3.5"
+	}
+}

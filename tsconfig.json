@@ -1,0 +1,28 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Node 14",
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "commonjs",
+		"declaration": true,
+		"outDir": "./dist",
+		"strict": true,
+		"moduleResolution": "Node",
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"noEmitHelpers": true,
+		"baseUrl": "src",
+		"paths": {
+			"#buttons/*": ["buttons/*"],
+			"#classes/*": ["classes/*"],
+			"#commands/*": ["commands/*"],
+			"#constants/*": ["constants/*"],
+			"#events/*": ["events/*"],
+			"#internals/*": ["internals/*"],
+			"#types/*": ["types/*"],
+			"#utils/*": ["utils/*"]
+		}
+	},
+	"include": ["src/**/*.ts"]
+}
