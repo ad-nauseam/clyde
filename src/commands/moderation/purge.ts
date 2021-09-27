@@ -28,7 +28,6 @@ const command: SlashCommand = {
 		const count = interaction.options.getNumber("count", true);
 		if (count > 100 || count < 1) {
 			interaction.reply({ content: "I can only clear between 1 and 100 messages!", ephemeral: true });
-			return;
 		} else {
 			const { channel } = interaction;
 			if (!channel) return;
@@ -37,7 +36,6 @@ const command: SlashCommand = {
 				interaction.reply({ content: `Deleted ${data.size} messages!`, ephemeral: true });
 			} else {
 				interaction.reply({ content: "This command cannot be used here", ephemeral: true });
-				return;
 			}
 		}
 	}
