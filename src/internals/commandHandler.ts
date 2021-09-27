@@ -1,5 +1,5 @@
 import { Collection } from "discord.js";
-import { MAIN_GUILD_ID } from "#constants/guilds";
+import { mainGuildId } from "#constants/ids";
 import { join } from "path";
 import { loadFiles } from "#utils/loadFiles";
 
@@ -26,7 +26,7 @@ function startCommandHandler(client: Client) {
 		const slashCmdArr: ApplicationCommandData[] = slashCommands.map((x) => x.data);
 		const contextCmdArr: ApplicationCommandData[] = contextCommands.map((x) => x.data);
 		const cmdArr = [...slashCmdArr, ...contextCmdArr];
-		const guild = client.guilds.cache.get(MAIN_GUILD_ID);
+		const guild = client.guilds.cache.get(mainGuildId);
 
 		if (!guild) {
 			client.logger.error("Guild could not be detected.");
