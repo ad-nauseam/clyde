@@ -1,9 +1,9 @@
-import type { GuildMember, TextChannel } from "discord.js";
-import type { DiscordEvent } from "#types/DiscordEvent";
-
 import { createCanvas, loadImage, registerFont } from "canvas";
 import { sep } from "path";
 import { welcomeChannelId } from "#constants/ids";
+
+import type { GuildMember, TextChannel } from "discord.js";
+import type { DiscordEvent } from "#types/DiscordEvent";
 
 const event: DiscordEvent = {
 	data: {

@@ -1,6 +1,6 @@
-import type { SlashCommand } from "#types/Commands";
-
 import { GuildMember } from "discord.js";
+
+import type { SlashCommand } from "#types/Commands";
 
 const command: SlashCommand = {
 	data: {

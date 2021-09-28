@@ -1,7 +1,7 @@
-import type { ContextMenuCommand } from "#types/Commands";
-
 import { MessageEmbed } from "discord.js";
 import { formatFieldList } from "#utils/formatting";
+
+import type { ContextMenuCommand } from "#types/Commands";
 
 const command: ContextMenuCommand = {
 	data: {

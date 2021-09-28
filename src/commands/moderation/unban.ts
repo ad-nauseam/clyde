@@ -1,5 +1,6 @@
-import type { SlashCommand } from "#types/Commands";
 import { compareTwoStrings } from "string-similarity";
+
+import type { SlashCommand } from "#types/Commands";
 
 const command: SlashCommand = {
 	data: {
