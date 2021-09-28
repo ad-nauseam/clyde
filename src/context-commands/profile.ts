@@ -1,5 +1,7 @@
-import type { ContextMenuCommand } from "#types/Commands";
 import { MessageEmbed } from "discord.js";
+import { formatFieldList } from "#utils/formatting";
+
+import type { ContextMenuCommand } from "#types/Commands";
 
 const command: ContextMenuCommand = {
 	data: {
@@ -17,23 +19,23 @@ const command: ContextMenuCommand = {
 				.catch(interaction.client.logger.warn);
 			return;
 		}
-		const { displayName, user, id, displayColor } = member;
-		const { tag } = user;
-		const embed = new MessageEmbed()
-			.setTitle(`${displayName}'s profile`)
-			.setColor(displayColor)
-			.addFields([
-				{
-					name: "username",
-					value: tag,
-					inline: false
-				},
-				{
-					name: "id",
-					value: id,
-					inline: true
-				}
-			]);
+		const { user, displayColor } = member;
+		const { username, tag, discriminator } = user;
+		const embed = new MessageEmbed({
+			author: {
+				name: tag,
+				icon_url: user.displayAvatarURL()
+			},
+			fields: formatFieldList([
+				"User Details",
+				[
+					["Username", username],
+					["Discriminator", discriminator]
+				]
+			]),
+			color: displayColor
+		});
+
 		interaction.reply({ embeds: [embed] }).catch(interaction.client.logger.warn);
 	}
 };

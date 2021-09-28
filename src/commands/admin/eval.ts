@@ -1,16 +1,13 @@
 import { Team } from "discord.js";
 import { Type } from "@sapphire/type";
+import { formatList } from "#utils/formatting";
 import { inspect } from "util";
 
 import type { CommandInteraction } from "discord.js";
 import type { SlashCommand } from "#types/Commands";
 
-function format(..._: [string, string][]) {
-	return _.map(([k, v]) => `__**${k}:**__\n\`\`\`ts\n${v}\n\`\`\``).join("\n");
-}
-
 async function _eval(interaction: CommandInteraction) {
-	const code = interaction.options.getString("code")!;
+	const code = interaction.options.getString("code", true);
 	const r = interaction.options.getBoolean("return");
 
 	let evaled;
@@ -31,7 +28,7 @@ async function _eval(interaction: CommandInteraction) {
 	interaction.reply(
 		evaled.length > 2000
 			? { files: [{ name: "output.js", attachment: Buffer.from(evaled) }] }
-			: { content: format(["Output", evaled], ["Input", code], ["Type", type.toString()]) }
+			: { content: formatList(["Output", evaled], ["Input", code], ["Type", type.toString()]) }
 	);
 }
 
@@ -57,9 +54,8 @@ const command: SlashCommand = {
 	async execute(interaction) {
 		const owner = (await interaction.client.application?.fetch())?.owner;
 
-		if (owner instanceof Team) {
-			if (owner.members.has(interaction.user.id)) await _eval.call(this, interaction);
-		} else if (owner?.id === interaction.user.id) await _eval.call(this, interaction);
+		if (owner?.id === interaction.user.id || (owner instanceof Team && owner.members.has(interaction.user.id)))
+			_eval.call(this, interaction);
 	}
 };
 

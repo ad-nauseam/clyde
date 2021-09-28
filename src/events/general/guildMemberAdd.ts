@@ -1,8 +1,9 @@
-import type { GuildMember, TextChannel } from "discord.js";
-import type { DiscordEvent } from "#types/DiscordEvent";
-
 import { createCanvas, loadImage, registerFont } from "canvas";
 import { sep } from "path";
+import { welcomeChannelId } from "#constants/ids";
+
+import type { GuildMember, TextChannel } from "discord.js";
+import type { DiscordEvent } from "#types/DiscordEvent";
 
 const event: DiscordEvent = {
 	data: {
@@ -11,7 +12,7 @@ const event: DiscordEvent = {
 		description: "boop"
 	},
 	async execute(member: GuildMember) {
-		const channel = member.guild.channels.cache.get("891981150380261377") as TextChannel;
+		const channel = member.guild.channels.cache.get(welcomeChannelId) as TextChannel;
 
 		// Loading font and images
 		registerFont(`${process.cwd()}${sep}fonts${sep}hack.ttf`, { family: "Hacked" });
