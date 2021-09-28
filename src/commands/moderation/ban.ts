@@ -1,4 +1,3 @@
-import { GuildMember } from "discord.js";
 import type { SlashCommand } from "#types/Commands";
 
 const command: SlashCommand = {
@@ -39,9 +38,9 @@ const command: SlashCommand = {
 		const reason = interaction.options.getString("reason") ?? "no reason provided";
 		const days = interaction.options.getNumber("days") ?? 0;
 
-		const member = await interaction.guild.members.fetch(user);
+		const member = await interaction.guild.members.fetch(user).catch(() => null);
 
-		if (member instanceof GuildMember) {
+		if (member) {
 			if (member.roles.highest.position > me.roles.highest.position)
 				return interaction.reply({ content: "I do not have the permission to ban this user", ephemeral: true });
 			if (member.id === me.id) return interaction.reply({ content: "I wont ban myself", ephemeral: true });
