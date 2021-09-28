@@ -24,10 +24,4 @@ startEventHandler(client);
 startCommandHandler(client);
 startButtonHandler(client);
 
-client
-	.login()
-	.then(() =>
-		client.logger.info(
-			client.generateInvite({ permissions: "ADMINISTRATOR", scopes: ["bot", "applications.commands"] })
-		)
-	);
+client.login();

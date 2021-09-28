@@ -1,1 +1,0 @@
-export const MAIN_GUILD_ID = "891914113599549480";
