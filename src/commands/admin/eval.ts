@@ -1,8 +1,9 @@
+import { Team } from "discord.js";
 import { Type } from "@sapphire/type";
 import { formatList } from "#utils/formatting";
 import { inspect } from "util";
 
-import type { CommandInteraction, Team } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import type { SlashCommand } from "#types/Commands";
 
 async function _eval(interaction: CommandInteraction) {
@@ -53,7 +54,7 @@ const command: SlashCommand = {
 	async execute(interaction) {
 		const owner = (await interaction.client.application?.fetch())?.owner;
 
-		if ((owner as Team).members.has(interaction.user.id) || owner?.id === interaction.user.id)
+		if (owner?.id === interaction.user.id || (owner instanceof Team && owner.members.has(interaction.user.id)))
 			_eval.call(this, interaction);
 	}
 };
