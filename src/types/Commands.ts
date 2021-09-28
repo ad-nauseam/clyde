@@ -1,5 +1,6 @@
 import type {
 	ApplicationCommandPermissionData,
+	AutocompleteInteraction,
 	ChatInputApplicationCommandData,
 	CommandInteraction,
 	ContextMenuInteraction,
@@ -11,6 +12,7 @@ interface SlashCommand {
 	data: ChatInputApplicationCommandData;
 	permissions?: ApplicationCommandPermissionData[];
 	execute(interaction: CommandInteraction): Promise<void>;
+	autocomplete?(interaction: AutocompleteInteraction): Promise<{ name: string; value: any }[] | undefined>;
 }
 
 type ContextMenuItem = MessageApplicationCommandData | UserApplicationCommandData;

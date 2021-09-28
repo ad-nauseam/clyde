@@ -99,8 +99,7 @@ async function startCommandHandler(client: Client) {
 			client.logger.info("No commands set.");
 		}
 	});
-
-	client.on("interactionCreate", (interaction) => {
+	client.on("interactionCreate", async (interaction) => {
 		if (interaction.isCommand()) {
 			const cmd = slashCommands.get(interaction.commandName);
 			if (!cmd) {
@@ -115,6 +114,19 @@ async function startCommandHandler(client: Client) {
 			}
 			client.logger.debug(`(ctx) ${cmd.data.name} executed by ${interaction.user.tag}.`);
 			cmd.execute(interaction);
+		} else if (interaction.isAutocomplete()) {
+			const cmd = slashCommands.get(interaction.commandName);
+			if (!cmd || !cmd.autocomplete) return;
+			const res = await cmd.autocomplete(interaction);
+
+			if (!res) return;
+
+			const choices = res.slice(0, 25).map(({ name, value }) => ({
+				name: name.substr(0, 99),
+				value: typeof value == "string" ? value.substr(0, 99) : value
+			}));
+
+			interaction.respond(choices);
 		}
 	});
 
