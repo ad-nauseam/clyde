@@ -23,13 +23,14 @@ const command: SlashCommand = {
 	permissions: [],
 
 	async execute(interaction) {
-		const user = interaction.options.getString("user")!;
-		const reason = interaction.options.getString("reason") ?? "no reason provided";
-
-		const me = interaction.guild?.me;
+		if (!interaction.guild) return;
+		const me = interaction.guild.me;
 		if (!me?.permissions.has("BAN_MEMBERS")) return interaction.reply("I dont have the BAN_MEMBERS permissions");
 
-		interaction.guild?.members.unban(user, reason);
+		const user = interaction.options.getString("user", true);
+		const reason = interaction.options.getString("reason") ?? "no reason provided";
+
+		interaction.guild.members.unban(user, reason);
 
 		interaction.reply(`**${user}** has been unbanned`);
 	},

@@ -1,3 +1,4 @@
+import { GuildMember } from "discord.js";
 import type { SlashCommand } from "#types/Commands";
 
 const command: SlashCommand = {
@@ -7,7 +8,7 @@ const command: SlashCommand = {
 		options: [
 			{
 				name: "user",
-				description: "User to kick",
+				description: "User to ban",
 				type: "USER",
 				required: true
 			},
@@ -28,20 +29,32 @@ const command: SlashCommand = {
 	},
 	permissions: [],
 	async execute(interaction) {
-		const user = interaction.options.getUser("user")!;
+		if (!interaction.guild) return;
+		const { me } = interaction.guild;
+
+		if (!me?.permissions.has("BAN_MEMBERS"))
+			return interaction.reply({ content: "I do not have the BAN_MEMBERS permissions", ephemeral: true });
+
+		const user = interaction.options.getUser("user", true);
 		const reason = interaction.options.getString("reason") ?? "no reason provided";
 		const days = interaction.options.getNumber("days") ?? 0;
 
-		const member = await interaction.guild?.members.fetch(user);
-		const me = interaction.guild?.me;
+		const member = await interaction.guild.members.fetch(user);
 
-		if (!me?.permissions.has("BAN_MEMBERS")) return interaction.reply("I dont have the BAN_MEMBERS permissions");
-		if (member?.permissions.has("ADMINISTRATOR") && !user.bot)
-			return interaction.reply({ content: "I do not have the permissions to ban this person" });
+		if (member instanceof GuildMember) {
+			if (member.roles.highest.position > me.roles.highest.position)
+				return interaction.reply({ content: "I do not have the permission to ban this user", ephemeral: true });
+			if (member.id === me.id) return interaction.reply({ content: "I wont ban myself", ephemeral: true });
+		}
 
-		member?.ban({ reason, days });
-
-		interaction.reply(`**${user.tag}** has been banned`);
+		await interaction.guild.members
+			.ban(user, { reason, days })
+			.then((x) => {
+				interaction.reply(`**${x.toString()}** has been banned`);
+			})
+			.catch((e: Error) => {
+				interaction.client.logger.error(e);
+			});
 	}
 };
 
