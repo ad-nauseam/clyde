@@ -1,18 +1,18 @@
 import type {
 	ApplicationCommandPermissionData,
+	AutocompleteInteraction,
 	ChatInputApplicationCommandData,
 	CommandInteraction,
 	ContextMenuInteraction,
 	MessageApplicationCommandData,
-	UserApplicationCommandData,
-	AutocompleteInteraction
+	UserApplicationCommandData
 } from "discord.js";
 
 interface SlashCommand {
 	data: ChatInputApplicationCommandData;
 	permissions?: ApplicationCommandPermissionData[];
 	execute(interaction: CommandInteraction): Promise<void>;
-	autocomplete?(interaction: AutocompleteInteraction): Promise<{ name: string, value: any }[]>
+	autocomplete?(interaction: AutocompleteInteraction): Promise<{ name: string; value: any }[] | undefined>;
 }
 
 type ContextMenuItem = MessageApplicationCommandData | UserApplicationCommandData;
