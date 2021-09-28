@@ -1,7 +1,7 @@
 import { Collection } from "discord.js";
-import { mainGuildId } from "#constants/ids";
 import { join } from "path";
 import { loadFiles } from "#utils/loadFiles";
+import { mainGuildId } from "#constants/ids";
 
 import type {
 	ApplicationCommand,
@@ -14,7 +14,7 @@ import type { ContextMenuCommand, SlashCommand } from "#types/Commands";
 
 const plural = (x: number) => (x === 1 ? "" : "s");
 
-function startCommandHandler(client: Client) {
+async function startCommandHandler(client: Client) {
 	const slashCommands = new Collection<string, SlashCommand>();
 	const contextCommands = new Collection<string, ContextMenuCommand>();
 	let commandData: Collection<Snowflake, ApplicationCommand>;
@@ -81,14 +81,14 @@ function startCommandHandler(client: Client) {
 		client.logger.info("Permissions set successfully.");
 	}
 
-	client.once("ready", async () => {
-		// Loading commands from /commands.
-		await loadFiles(slashCommands, join(__dirname, "..", "commands"), client);
-		await loadFiles(contextCommands, join(__dirname, "..", "context-commands"), client);
+	// Loading commands from /commands.
+	await loadFiles(slashCommands, join(__dirname, "..", "commands"), client);
+	await loadFiles(contextCommands, join(__dirname, "..", "context-commands"), client);
 
-		client.logger.info(`${slashCommands.size} slash command${plural(slashCommands.size)} loaded.`);
-		client.logger.info(`${contextCommands.size} context menu item${plural(contextCommands.size)} loaded.`);
+	client.logger.info(`${slashCommands.size} slash command${plural(slashCommands.size)} loaded.`);
+	client.logger.info(`${contextCommands.size} context menu item${plural(contextCommands.size)} loaded.`);
 
+	client.on("ready", async () => {
 		if (process.argv.includes("--edit")) {
 			// Setting the commands as slash commands in the selected guild.
 			commandData = await setCommands(slashCommands, contextCommands);
@@ -99,6 +99,7 @@ function startCommandHandler(client: Client) {
 			client.logger.info("No commands set.");
 		}
 	});
+
 	client.on("interactionCreate", (interaction) => {
 		if (interaction.isCommand()) {
 			const cmd = slashCommands.get(interaction.commandName);
